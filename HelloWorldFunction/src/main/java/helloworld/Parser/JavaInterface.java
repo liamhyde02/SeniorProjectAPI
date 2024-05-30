@@ -7,12 +7,13 @@ import java.util.ArrayList;
 public class JavaInterface implements JavaEntity{
     String name, fullyQualifiedName;
     int linesOfCode;
-    ArrayList<String> dependencies;
-    public JavaInterface(String name, String fullyQualifiedName, int linesOfCode, ArrayList<String> dependencies) {
+    ArrayList<String> dependencies, methods;
+    public JavaInterface(String name, String fullyQualifiedName, int linesOfCode, ArrayList<String> dependencies, ArrayList<String> methods) {
         this.name = name;
         this.fullyQualifiedName = fullyQualifiedName;
         this.linesOfCode = linesOfCode;
         this.dependencies = dependencies;
+        this.methods = methods;
     }
     @Override
     public String getName() {
@@ -29,12 +30,19 @@ public class JavaInterface implements JavaEntity{
         return this.dependencies;
     }
 
+    public ArrayList<String> getMethods() {
+        return this.methods;
+    }
+
     @Override
     public int getLinesOfCode() {
         return this.linesOfCode;
     }
 
     @Override
+    public String getStrType() {
+        return "iface";
+    }
     public JavaEntityType getType() {
         return JavaEntityType.JAVA_INTERFACE;
     }
@@ -45,6 +53,7 @@ public class JavaInterface implements JavaEntity{
         jsonObject.put("linesOfCode", this.getLinesOfCode());
         jsonObject.put("dependencies", this.getDependencies());
         jsonObject.put("type", this.getType());
+        jsonObject.put("methods", this.getMethods());
         return jsonObject;
     }
 }

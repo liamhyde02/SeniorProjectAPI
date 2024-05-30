@@ -9,10 +9,15 @@ public class JavaAbstractClass extends JavaClass{
     public JavaAbstractClass(String name, String fullyQualifiedName, int linesOfCode,
                              ArrayList<String> dependencies, ArrayList<String> realizations,
                              ArrayList<String> compositions, ArrayList<String> associations,
+                             ArrayList<String> methods, ArrayList<String> fields,
                              Optional<String> parent) {
-        super(name, fullyQualifiedName, linesOfCode, dependencies, realizations, compositions, associations, parent);
+        super(name, fullyQualifiedName, linesOfCode, dependencies, realizations, compositions, associations, methods, fields, parent);
     }
     @Override
+    public String getStrType() {
+        return "aclass";
+    }
+
     public JavaEntityType getType() {
         return JavaEntityType.JAVA_ABSTRACT_CLASS;
     }
@@ -29,6 +34,7 @@ public class JavaAbstractClass extends JavaClass{
         jsonObject.put("associations", this.getAssociations());
         jsonObject.put("parent", this.getParent());
         jsonObject.put("type", this.getType());
+        jsonObject.put("methods", this.getMethods());
         return jsonObject;
     }
 }

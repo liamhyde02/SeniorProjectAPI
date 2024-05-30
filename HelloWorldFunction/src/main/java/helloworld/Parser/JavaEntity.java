@@ -10,5 +10,7 @@ public interface JavaEntity {
     ArrayList<String> getDependencies();
     int getLinesOfCode();
     JavaEntityType getType();
+    String getStrType();
     JSONObject toJSON();
+    ArrayList<String> getMethods();
 }

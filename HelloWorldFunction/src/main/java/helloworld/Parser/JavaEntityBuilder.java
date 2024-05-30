@@ -6,7 +6,7 @@ import java.util.Optional;
 public class JavaEntityBuilder implements EntityBuilder{
     String name, fullyQualifiedName;
     Optional<String> parent;
-    ArrayList<String> dependencies, compositions, realizations, associations;
+    ArrayList<String> dependencies, compositions, realizations, associations, methods, fields;
     JavaEntityType type;
     int linesOfCode;
     public JavaEntityBuilder() {
@@ -14,20 +14,22 @@ public class JavaEntityBuilder implements EntityBuilder{
         compositions = new ArrayList<>();
         realizations = new ArrayList<>();
         associations = new ArrayList<>();
+        methods = new ArrayList<>();
+        fields = new ArrayList<>();
         parent = Optional.empty();
     }
     @Override
     public JavaEntity build() {
         if (this.type == JavaEntityType.JAVA_INTERFACE) {
-            return new JavaInterface(name, fullyQualifiedName, linesOfCode, dependencies);
+            return new JavaInterface(name, fullyQualifiedName, linesOfCode, dependencies, methods);
         }
         else if (this.type == JavaEntityType.JAVA_BASE_CLASS) {
             return new JavaBaseClass(name, fullyQualifiedName, linesOfCode, dependencies,
-                    realizations, compositions, associations, parent);
+                    realizations, compositions, associations, methods, fields, parent);
         }
         else if (this.type == JavaEntityType.JAVA_ABSTRACT_CLASS) {
             return new JavaAbstractClass(name, fullyQualifiedName, linesOfCode, dependencies,
-                    realizations, compositions, associations, parent);
+                    realizations, compositions, associations, methods, fields, parent);
         }
         else {
             return null;
@@ -65,6 +67,13 @@ public class JavaEntityBuilder implements EntityBuilder{
     }
     @Override
     public void addAssociation(String s) {this.associations.add(s); }
+
+    @Override
+    public void addMethod(String s) {
+        this.methods.add(s);
+    }
+
+    public void addField(String s) { this.fields.add(s); }
 
     @Override
     public void parent(String s) {

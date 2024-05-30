@@ -1,15 +1,27 @@
 package helloworld.GraphBuilder;
 
+import java.util.ArrayList;
+
+import helloworld.Parser.JavaClass;
+import helloworld.Parser.JavaEntity;
+import helloworld.Parser.JavaEntityType;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class NodeFactory {
 
-    public static void createNode(JSONObject jsonObject){
+    public static void createNode(JavaEntity javaEntity){
         try {
-            String name = jsonObject.getString("name");
-            String type = getType(jsonObject.getString("type"));
-            double size = getSize(jsonObject.getInt("linesOfCode"));
-            Node newNode = new Node(name, type, size);
+            String name = javaEntity.getName();
+            String type = javaEntity.getStrType();
+            double size = getSize(javaEntity.getLinesOfCode());
+            ArrayList<String> methods = javaEntity.getMethods();
+            ArrayList<String> fields = new ArrayList<>();
+            if (javaEntity.getType().equals(JavaEntityType.JAVA_BASE_CLASS) || javaEntity.getType().equals(JavaEntityType.JAVA_ABSTRACT_CLASS)) {
+                JavaClass javaClass = (JavaClass) javaEntity;
+                fields = javaClass.getFields();
+            }
+            Node newNode = new Node(name, type, size, methods, fields);
             DataStorage.addNode(newNode);
         } catch (Exception e) {
             return;

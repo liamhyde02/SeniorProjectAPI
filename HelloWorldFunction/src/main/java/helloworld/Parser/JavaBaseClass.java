@@ -9,10 +9,14 @@ public class JavaBaseClass extends JavaClass{
     public JavaBaseClass(String name, String fullyQualifiedName, int linesOfCode,
                          ArrayList<String> dependencies, ArrayList<String> realizations,
                          ArrayList<String> compositions, ArrayList<String> associations,
+                         ArrayList<String> methods, ArrayList<String> fields,
                          Optional<String> parent) {
-        super(name, fullyQualifiedName, linesOfCode, dependencies, realizations, compositions, associations, parent);
+        super(name, fullyQualifiedName, linesOfCode, dependencies, realizations, compositions, associations, methods, fields, parent);
     }
     @Override
+    public String getStrType() {
+        return "class";
+    }
     public JavaEntityType getType() {
         return JavaEntityType.JAVA_BASE_CLASS;
     }

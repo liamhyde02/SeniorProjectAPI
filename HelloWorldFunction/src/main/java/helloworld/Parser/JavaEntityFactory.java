@@ -22,7 +22,9 @@ public class JavaEntityFactory implements EntityFactory{
                             new InheritanceParsingStep(
                                 new RealizationParsingStep(
                                     new CompositionParsingStep(
-                                        new BuildParsingFinish()))))))));
+                                        new MethodParsingStep(
+                                            new FieldParsingStep(
+                                                new BuildParsingFinish()))))))))));
         
         String fileContent = Files.readString(Paths.get(filename.toURI()));
         CompilationUnit compilationUnit = StaticJavaParser.parse(fileContent);

@@ -1,13 +1,15 @@
 package helloworld.GraphBuilder;
 
+import helloworld.Parser.JavaEntity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 public class EdgeFactory {
 
-    public static void createEdges(JSONObject jsonObject){
-        String name = jsonObject.getString("name");
+    public static void createEdges(JavaEntity javaEntity){
+        String name = javaEntity.getName();
+        JSONObject jsonObject = javaEntity.toJSON();
         if (jsonObject.has("associations")) {
             createOuts(name, "association", jsonObject.getJSONArray("associations"));
         }

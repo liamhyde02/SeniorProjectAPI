@@ -6,8 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class JavaParserFunctionality implements JavaParser{
-    public JSONArray parse(ArrayList<File> files) {
-        JSONArray jsonArray = new JSONArray();
+    public ArrayList<JavaEntity> parse(ArrayList<File> files) {
         ArrayList<JavaEntity> entities = new ArrayList<>();
         SourceCodeParser sourceCodeParser = new SourceCodeParser();
         try {
@@ -17,9 +16,6 @@ public class JavaParserFunctionality implements JavaParser{
         }
         EntityCleaning entityCleaning = new EntityCleaning();
         entityCleaning.clean(entities);
-        for (JavaEntity entity : entities) {
-            jsonArray.put(entity.toJSON());
-        }
-        return jsonArray;
+        return entities;
     }
 }

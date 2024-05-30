@@ -12,7 +12,6 @@ helloworld\DataFetcher\GithubDataFetcher.class
 helloworld\Parser\NameParsingStep.class
 helloworld\Parser\JavaBaseClass.class
 helloworld\Parser\CleaningChainLink.class
-helloworld\GraphBuilder\Main.class
 helloworld\Parser\DependencyCleaning.class
 helloworld\UMLBuilder.class
 helloworld\Parser\TypeParsingStep.class

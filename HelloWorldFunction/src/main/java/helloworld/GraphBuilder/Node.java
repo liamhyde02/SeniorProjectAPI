@@ -3,18 +3,22 @@ package helloworld.GraphBuilder;
 import org.json.JSONObject;
 
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class Node {
     private final String name;
     private final String type;
     private final double size;
+    private final ArrayList<String> methods, fields;
     private double instability;
     private double abstractness;
 
-    public Node(String name, String type, double size) {
+    public Node(String name, String type, double size, ArrayList<String> methods, ArrayList<String> fields) {
         this.name = name;
         this.type = type;
         this.size = size;
+        this.methods = methods;
+        this.fields = fields;
     }
 
     public String getName() {
@@ -27,6 +31,14 @@ public class Node {
 
     public double getSize() {
         return size;
+    }
+
+    public ArrayList<String> getMethods() {
+        return methods;
+    }
+
+    public ArrayList<String> getFields() {
+        return fields;
     }
 
     public void setInstability(double instability) {

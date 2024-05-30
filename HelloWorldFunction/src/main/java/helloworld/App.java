@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import helloworld.DataFetcher.GithubDataFetcher;
 import helloworld.GraphBuilder.Functionality;
+import helloworld.Parser.JavaEntity;
 import helloworld.Parser.JavaParserFunctionality;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,10 +65,10 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
             }
 
             JavaParserFunctionality parser = new JavaParserFunctionality();
-            JSONArray parserResponseBody = parser.parse(files);
-            JSONObject output = Functionality.toGraphData(parserResponseBody);
+            ArrayList<JavaEntity> JavaEntities = parser.parse(files);
+            Functionality.toGraphData(JavaEntities);
             S3Handler s3Handler = new S3Handler("lihydeseniorprojectactionbucket");
-            UMLBuilder umlBuilder = new UMLBuilder(output, s3Handler);
+            UMLBuilder umlBuilder = new UMLBuilder(s3Handler);
             String S3Link = umlBuilder.buildUMLDiagram();
             return response
                     .withStatusCode(200)

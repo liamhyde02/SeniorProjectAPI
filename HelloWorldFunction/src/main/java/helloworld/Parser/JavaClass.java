@@ -5,12 +5,14 @@ import java.util.Optional;
 
 public abstract class JavaClass implements JavaEntity {
     String fullyQualifiedName, name;
-    ArrayList<String> dependencies, realizations, compositions, associations;
+    ArrayList<String> dependencies, realizations, compositions, associations, methods, fields;
     Optional<String> parent;
     int linesOfCode;
     public JavaClass(String name, String fullyQualifiedName, int linesOfCode,
                          ArrayList<String> dependencies, ArrayList<String> realizations,
-                         ArrayList<String> compositions, ArrayList<String> associations, Optional<String> parent) {
+                         ArrayList<String> compositions, ArrayList<String> associations, 
+                         ArrayList<String> methods, ArrayList<String> fields,
+                        Optional<String> parent) {
         this.name = name;
         this.fullyQualifiedName = fullyQualifiedName;
         this.linesOfCode = linesOfCode;
@@ -19,6 +21,8 @@ public abstract class JavaClass implements JavaEntity {
         this.compositions = compositions;
         this.associations = associations;
         this.parent = parent;
+        this.methods = methods;
+        this.fields = fields;
     }
     public ArrayList<String> getAssociations() {
         return associations;
@@ -32,6 +36,10 @@ public abstract class JavaClass implements JavaEntity {
     public ArrayList<String> getRealizations() {
         return realizations;
     }
+    public ArrayList<String> getFields() {return fields;}
+    public ArrayList<String> getMethods() {
+        return methods;
+    }
     public String getParent() {
         return parent.orElse(null);
     }
@@ -44,6 +52,7 @@ public abstract class JavaClass implements JavaEntity {
     public int getLinesOfCode() {
         return linesOfCode;
     }
+    public abstract String getStrType();
     public abstract JavaEntityType getType();
     public void setParent(String parent) {
         this.parent = Optional.ofNullable(parent);

@@ -14,14 +14,12 @@ C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\AssociationCleaning.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\DependencyParsingStep.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\GraphBuilder\Functionality.java
-C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\GraphBuilder\App.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\TypeParsingStep.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\EntityParsingFinish.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\CompositionParsingStep.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\JavaParserFunctionality.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\EntityBuilder.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\JavaClass.java
-C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Main.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\DependencyCleaning.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\DataFetcher\DataFetcher.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\RealizationParsingStep.java
@@ -37,6 +35,7 @@ C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\EntityCleaning.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\JavaBaseClass.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\DataFetcher\GithubDataFetcher.java
+C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\MethodParsingStep.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\JavaEntityFactory.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\Parser.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\GraphBuilder\Main.java
@@ -45,6 +44,7 @@ C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\GraphBuilder\LoopingFunctionality.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\NameParsingStep.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\RealizationCleaning.java
+C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\Method.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\GraphBuilder\Node.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\EntityParsingChain.java
 C:\Users\liamh\OneDrive\Desktop\csc509\CoreEngine2.2\HelloWorldFunction\src\main\java\helloworld\Parser\JavaParser.java

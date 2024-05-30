@@ -1,15 +1,17 @@
 package helloworld.GraphBuilder;
 
+import helloworld.Parser.JavaEntity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class LoopingFunctionality {
 
-    public static void runChain(JSONArray jsonArray){
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            NodeFactory.createNode(jsonObject);
-            EdgeFactory.createEdges(jsonObject);
+    public static void runChain(ArrayList<JavaEntity> javaEntities){
+        for (JavaEntity javaEntity : javaEntities) {
+            NodeFactory.createNode(javaEntity);
+            EdgeFactory.createEdges(javaEntity);
         }
     }
 }
