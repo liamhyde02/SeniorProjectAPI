@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.InputStream;
+import java.time.Instant;
 
 public class S3Handler {
     private final S3Client s3Client;
@@ -34,6 +35,7 @@ public class S3Handler {
                     .key(imageKey)
                     .contentType("image/svg+xml")
                     .acl("public-read")
+                    .expires(Instant.now().plusSeconds(60 * 60 * 24))
                     .build();
 
             s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(imageStream, contentLength));

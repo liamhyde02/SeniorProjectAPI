@@ -2,7 +2,10 @@ package helloworld.Parser;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
+import java.util.Optional;
 
 public class RealizationParsingStep extends EntityParsingStep {
 
@@ -12,8 +15,11 @@ public class RealizationParsingStep extends EntityParsingStep {
 
     @Override
     public JavaEntity construct(EntityBuilder entityBuilder, CompilationUnit compilationUnit) {
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = compilationUnit.findFirst(ClassOrInterfaceDeclaration.class);
         InterfaceVisitor visitor = new InterfaceVisitor();
-        visitor.visit(compilationUnit, entityBuilder);
+        if (classOrInterface.isPresent()) {
+            visitor.visit(compilationUnit, entityBuilder);
+        }
         if (this.next != null) {
             return this.next.construct(entityBuilder, compilationUnit);
         } else {

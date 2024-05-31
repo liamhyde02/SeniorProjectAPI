@@ -6,16 +6,15 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.Optional;
 
-
-public class FieldParsingStep extends EntityParsingStep{
-    public FieldParsingStep(EntityParsingChain next) {
+public class MethodParsingStep extends EntityParsingStep{
+    public MethodParsingStep(EntityParsingChain next) {
         super(next);
     }
 
     @Override
     public JavaEntity construct(EntityBuilder builder, CompilationUnit cu) {
         Optional<ClassOrInterfaceDeclaration> classOrInterface = cu.findFirst(ClassOrInterfaceDeclaration.class);
-        FieldVisitor visitor = new FieldVisitor();
+        MethodVisitor visitor = new MethodVisitor();
         if (classOrInterface.isPresent()) {
             visitor.visit(cu, builder);
         }
@@ -24,13 +23,13 @@ public class FieldParsingStep extends EntityParsingStep{
         }
         return builder.build();
     }
-    private static class FieldVisitor extends VoidVisitorAdapter<EntityBuilder> {
+    private static class MethodVisitor extends VoidVisitorAdapter<EntityBuilder> {
         @Override
         public void visit(ClassOrInterfaceDeclaration n, EntityBuilder builder) {
             super.visit(n, builder);
-            n.getFields().forEach(field -> {
-                Field newField = new Field(field.getVariables().get(0).getNameAsString(), field.getElementType().asString(), field.getAccessSpecifier().asString(), field.isStatic(), field.isFinal());
-                builder.addField(newField.toString());
+            n.getMethods().forEach(method -> {
+                Method newMethod = new Method(method.getNameAsString(), method.getTypeAsString(), method.getAccessSpecifier().asString(), method.isStatic(), method.isAbstract(), method.isFinal());
+                builder.addMethod(newMethod.toString());
             });
         }
     }

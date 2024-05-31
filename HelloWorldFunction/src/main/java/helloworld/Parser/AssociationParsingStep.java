@@ -1,9 +1,12 @@
 package helloworld.Parser;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
+import java.util.Optional;
 
 public class AssociationParsingStep extends EntityParsingStep {
 
@@ -13,8 +16,11 @@ public class AssociationParsingStep extends EntityParsingStep {
 
   @Override
   public JavaEntity construct(EntityBuilder builder, CompilationUnit declaration) {
+    Optional<ClassOrInterfaceDeclaration> classOrInterface = declaration.findFirst(ClassOrInterfaceDeclaration.class);
     AssociationVisitor visitor = new AssociationVisitor();
-    visitor.visit(declaration, builder);
+    if (classOrInterface.isPresent()) {
+      visitor.visit(declaration, builder);
+    }
     if (this.next != null) {
       return this.next.construct(builder, declaration);
     } else {

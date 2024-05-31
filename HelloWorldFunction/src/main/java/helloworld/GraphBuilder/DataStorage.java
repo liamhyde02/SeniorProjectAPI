@@ -1,8 +1,8 @@
 package helloworld.GraphBuilder;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import helloworld.FileSingleton;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,64 +10,76 @@ import java.util.Set;
 
 public class DataStorage {
     private static double averageLOC = 0;
-    private static List<Node> nodeList = new ArrayList<>();
-    private static List<Edge> edgeList = new ArrayList<>();
+    private ArrayList<Node> nodeList = new ArrayList<>();
+    private ArrayList<Edge> edgeList = new ArrayList<>();
     public static double getAverageLOC() {
         return averageLOC;
     }
     public static void setAverageLOC(double avgLOC) {
         averageLOC = avgLOC;
     }
+    private static DataStorage instance = null;
 
-    public static void addNode(Node node) {
-        nodeList.add(node);
+    private DataStorage() {
     }
 
-    public static void addEdge(Edge edge) {
+    public static DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
+    }
+
+    public void addNode(Node node) {
+        this.nodeList.add(node);
+    }
+
+    public void addEdge(Edge edge) {
         edgeList.add(edge);
     }
 
-    public static List<Node> getNodes() {
-        return new ArrayList<>(nodeList);
+    public ArrayList<Node> getNodes() {
+        return new ArrayList<>(this.nodeList);
     }
 
-    public static List<Edge> getEdges() {
-        return new ArrayList<>(edgeList);
+    public ArrayList<Edge> getEdges() {
+        return new ArrayList<>(this.edgeList);
     }
 
-    public static void removeDuplicateEdges() {
+    public void removeDuplicateEdges() {
+        List<Edge> edgeList = this.edgeList;
         Set<Edge> uniqueEdges = new HashSet<>(edgeList);
         edgeList.clear();
         edgeList.addAll(uniqueEdges);
     }
-    public static void removeDuplicateNodes() {
+    public void removeDuplicateNodes() {
         Set<Node> uniqueNodes = new HashSet<>(nodeList);
         nodeList.clear();
         nodeList.addAll(uniqueNodes);
-    }
-
-    public static JSONObject returnData() {
-        JSONObject data = new JSONObject();
-
-        JSONArray nodesArray = new JSONArray();
+        ArrayList<Node> invalidNodes = new ArrayList<>();
+        ArrayList<Edge> invalidEdges = new ArrayList<>();
         for (Node node : nodeList) {
-            nodesArray.put(node.toJsonObject());
+            boolean isFile = false;
+            for (File file : FileSingleton.getInstance().getFiles()) {
+                if (file.getPath().contains(node.getName())) {
+                    isFile = true;
+                    break;
+                }
+            }
+            if (!isFile) {
+                invalidNodes.add(node);
+            }
         }
-
-        JSONArray edgesArray = new JSONArray();
-        for (Edge edge : edgeList) {
-            edgesArray.put(edge.toJsonObject());
+        for (Node node : invalidNodes) {
+            for (Edge edge : edgeList) {
+                if (edge.getFrom().equals(node.getName()) || edge.getTo().equals(node.getName())) {
+                    invalidEdges.add(edge);
+                }
+            }
         }
-
-        data.put("Nodes", nodesArray);
-        data.put("Edges", edgesArray);
-
-        return data;
+        this.nodeList.removeAll(invalidNodes);
+        this.edgeList.removeAll(invalidEdges);
+        System.out.println("Number of nodes: " + nodeList.size());
     }
 
-    public static void clearData() {
-        nodeList.clear();
-        edgeList.clear();
-        averageLOC = 0;
-    }
 }

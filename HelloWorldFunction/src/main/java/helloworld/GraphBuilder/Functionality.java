@@ -9,12 +9,9 @@ import java.util.ArrayList;
 
 public class Functionality {
 
-    public static JSONObject toGraphData(ArrayList<JavaEntity> JavaEntities) {
-        LocCalculator.calculateLOC(JavaEntities);
+    public static void toGraphData(ArrayList<JavaEntity> JavaEntities) {
         LoopingFunctionality.runChain(JavaEntities);
-        DataStorage.removeDuplicateEdges();
-        MetricsCalculator.calculateMetrics(DataStorage.getNodes(), DataStorage.getEdges());
-        DataStorage.removeDuplicateNodes();
-        return DataStorage.returnData();
+        DataStorage.getInstance().removeDuplicateNodes();
+        DataStorage.getInstance().removeDuplicateEdges();
     }
 }

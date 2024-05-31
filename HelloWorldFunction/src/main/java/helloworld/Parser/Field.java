@@ -15,7 +15,7 @@ public class Field {
     }
 
     public String toString() {
-        String staticRepr = isStatic ? "static " : "";
+        String staticRepr = isStatic ? "{static} " : "";
         String finalRepr = isFinal ? "final " : "";
         switch (visibility) {
             case "public":

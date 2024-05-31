@@ -17,8 +17,8 @@ public class Method {
     }
 
     public String toString() {
-        String staticRepr = isStatic ? "static " : "";
-        String abstractRepr = isAbstract ? "abstract " : "";
+        String staticRepr = isStatic ? "{static} " : "";
+        String abstractRepr = isAbstract ? "{abstract} " : "";
         String finalRepr = isFinal ? "final " : "";
         switch (visibility) {
             case "public":

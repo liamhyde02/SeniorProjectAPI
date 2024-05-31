@@ -8,6 +8,7 @@ import helloworld.DataFetcher.GithubDataFetcher;
 import helloworld.GraphBuilder.Functionality;
 import helloworld.Parser.JavaEntity;
 import helloworld.Parser.JavaParserFunctionality;
+import helloworld.Patterns.PatternParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,7 +31,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         // Clean up /tmp directory at the beginning
-        cleanupTmpDirectory();
+        GithubDataFetcher.clearFiles();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -54,20 +55,19 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
                             .withBody("{\"error\": \"Invalid fetching type: " + message + "\"}")
                             .withStatusCode(500);
             }
-            ArrayList<File> files = new ArrayList<>();
             try {
-                files.addAll(new GithubDataFetcher().downloadPackage(body.getString("url"), branch, true));
+                 new GithubDataFetcher().downloadPackage(fetcherRequestBody.getString("url"), branch, true);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return response
                         .withBody("{\"error\": \"Failed to fetch files: " + e.getMessage() + "\"}")
                         .withStatusCode(500);
             }
-
             JavaParserFunctionality parser = new JavaParserFunctionality();
-            ArrayList<JavaEntity> JavaEntities = parser.parse(files);
+            ArrayList<JavaEntity> JavaEntities = parser.parse();
             Functionality.toGraphData(JavaEntities);
             S3Handler s3Handler = new S3Handler("lihydeseniorprojectactionbucket");
+            PatternParser.parsePatterns();
             UMLBuilder umlBuilder = new UMLBuilder(s3Handler);
             String S3Link = umlBuilder.buildUMLDiagram();
             return response
@@ -82,17 +82,6 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
             return response
                     .withBody(error.toString())
                     .withStatusCode(500);
-        }
-    }
-
-    private void cleanupTmpDirectory() {
-        File tmpDir = new File("/tmp");
-        if (tmpDir.isDirectory()) {
-            for (File file : tmpDir.listFiles()) {
-                if (file.isFile()) {
-                    file.delete();
-                }
-            }
         }
     }
 

@@ -2,6 +2,7 @@ package helloworld.DataFetcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import helloworld.FileSingleton;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,22 +10,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class GithubDataFetcher implements DataFetcher {
-    private static final String LAMBDA_TMP_DIR = "/tmp/";
-    private static String downloadDirectory = LAMBDA_TMP_DIR; // default to Lambda tmp directory
     private static final String GITHUB_API_URL = "https://api.github.com";
-    private static final String GITHUB_TOKEN = System.getenv("GITHUB_TOKEN"); // Replace with your GitHub token
+    private static final String GITHUB_TOKEN = System.getenv("GITHUB_TOKEN");
+    private static Path tempDirectory;
 
-    public ArrayList<File> downloadPackage(String repoUrl, String branch, boolean isLambdaEnvironment) throws IOException {
-        if (!isLambdaEnvironment) {
-            downloadDirectory = System.getProperty("user.dir") + File.separator + "downloaded_files"; // or any other directory
-            new File(downloadDirectory).mkdirs(); // create the directory if it doesn't exist
+    public GithubDataFetcher() throws IOException {
+        String tempDir = System.getenv("LAMBDA_TMP_DIR");
+        if (tempDir == null) {
+            tempDir = "/tmp/";
         }
+        UUID uuid = UUID.randomUUID();
+        System.out.println("UUID: " + uuid);
+        FileSingleton.getInstance().setUuid(uuid);
+        tempDirectory = Files.createTempDirectory(Paths.get(tempDir), "github_fetcher_" + uuid.toString() + "_");
+        tempDirectory.toFile().deleteOnExit();
+    }
 
+    public void downloadPackage(String repoUrl, String branch, boolean isLambdaEnvironment) throws IOException {
         ArrayList<File> javaFiles = new ArrayList<>();
         String ownerRepo = repoUrl.substring(repoUrl.indexOf("github.com/") + 11);
         String[] ownerRepoParts = ownerRepo.split("/");
@@ -32,10 +47,8 @@ public class GithubDataFetcher implements DataFetcher {
         String repo = ownerRepoParts[1];
         String treeUrl = String.format("%s/repos/%s/%s/git/trees/%s?recursive=1", GITHUB_API_URL, owner, repo, branch);
 
-        // Fetch the repository tree
         JsonNode tree = fetchJson(treeUrl).get("tree");
 
-        // Iterate over the tree entries and filter for .java files
         Iterator<JsonNode> elements = tree.elements();
         while (elements.hasNext()) {
             JsonNode entry = elements.next();
@@ -45,8 +58,8 @@ public class GithubDataFetcher implements DataFetcher {
                 javaFiles.add(downloadedFile);
             }
         }
-
-        return javaFiles;
+        System.out.println("Downloaded " + javaFiles.size() + " files");
+        FileSingleton.getInstance().setFiles(javaFiles);
     }
 
     private static JsonNode fetchJson(String urlString) throws IOException {
@@ -61,12 +74,13 @@ public class GithubDataFetcher implements DataFetcher {
         }
     }
 
-    private static File downloadFile(URL url, String filePath) throws IOException {
+    private File downloadFile(URL url, String filePath) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty("Authorization", "token " + GITHUB_TOKEN);
 
-        File file = new File(downloadDirectory + File.separator + filePath);
-        file.getParentFile().mkdirs(); // Ensure the parent directories are created
+        String fileName = Paths.get(filePath).getFileName().toString();
+        File file = new File(tempDirectory.toFile(), fileName);
+        file.getParentFile().mkdirs();
         try (InputStream in = connection.getInputStream(); FileOutputStream fos = new FileOutputStream(file)) {
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -76,4 +90,16 @@ public class GithubDataFetcher implements DataFetcher {
         }
         return file;
     }
+
+    public static void clearFiles() {
+        try {
+            Process p = Runtime.getRuntime().exec("rm -rf /tmp/...?* /tmp/.[!.]* /tmp/*");
+            p.waitFor();
+            System.out.println("Cleared /tmp directory");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
