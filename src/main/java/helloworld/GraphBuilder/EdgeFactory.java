@@ -22,6 +22,9 @@ public class EdgeFactory {
         if (jsonObject.has("dependencies")) {
             createOuts(name, "dependencies", jsonObject.getJSONArray("dependencies"));
         }
+        if (jsonObject.has("parent")) {
+            createOuts(name, "parent", new JSONArray().put(jsonObject.getString("parent")));
+        }
     }
 
     public static void createOuts(String name, String type, JSONArray outs){

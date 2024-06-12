@@ -85,13 +85,16 @@ public class UMLBuilder {
                         uml.append(from).append(" ..|> ");
                         break;
                     case "composition":
-                        uml.append(from).append(" *-- ");
+                        uml.append(from).append(" --* ");
                         break;
                     case "dependencies":
                         uml.append(from).append(" ..> ");
                         break;
                     case "association":
                         uml.append(from).append(" -- ");
+                        break;
+                    case "parent":
+                        uml.append(from).append(" --|> ");
                         break;
                 }
                 uml.append(to).append("\n");
