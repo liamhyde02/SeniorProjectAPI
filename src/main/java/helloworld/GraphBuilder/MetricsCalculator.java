@@ -12,7 +12,6 @@ public class MetricsCalculator {
 
             double instability = total == 0 ? 0 : outs / total;
             double abstractness = calculateAbstractness(node.getType());
-
             node.setInstability(instability);
             node.setAbstractness(abstractness);
         }
@@ -33,7 +32,7 @@ public class MetricsCalculator {
     }
 
     private static double calculateAbstractness(String nodeType) {
-        if ("aclass".equals(nodeType) || "iface".equals(nodeType)) {
+        if ("aclass".equals(nodeType) || "iface".equals(nodeType) || "enum".equals(nodeType)) {
             return 1.0;
         } else {
             return 0.0;

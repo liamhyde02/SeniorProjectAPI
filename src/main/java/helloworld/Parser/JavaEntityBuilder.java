@@ -6,7 +6,7 @@ import java.util.Optional;
 public class JavaEntityBuilder implements EntityBuilder{
     String name, fullyQualifiedName;
     Optional<String> parent;
-    ArrayList<String> dependencies, compositions, realizations, associations, methods, fields;
+    ArrayList<String> dependencies, compositions, realizations, associations, methods, fields, types;
     JavaEntityType type;
     int linesOfCode;
     public JavaEntityBuilder() {
@@ -16,6 +16,7 @@ public class JavaEntityBuilder implements EntityBuilder{
         associations = new ArrayList<>();
         methods = new ArrayList<>();
         fields = new ArrayList<>();
+        types = new ArrayList<>();
         parent = Optional.empty();
     }
     @Override
@@ -30,6 +31,8 @@ public class JavaEntityBuilder implements EntityBuilder{
         else if (this.type == JavaEntityType.JAVA_ABSTRACT_CLASS) {
             return new JavaAbstractClass(name, fullyQualifiedName, linesOfCode, dependencies,
                     realizations, compositions, associations, methods, fields, parent);
+        } else if (this.type == JavaEntityType.JAVA_ENUM) {
+            return new JavaEnum(name, fullyQualifiedName, linesOfCode, dependencies, types);
         }
         else {
             return null;
@@ -74,6 +77,8 @@ public class JavaEntityBuilder implements EntityBuilder{
     }
 
     public void addField(String s) { this.fields.add(s); }
+
+    public void addType(String s) { this.types.add(s); }
 
     @Override
     public void parent(String s) {

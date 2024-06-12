@@ -4,6 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.Optional;
+
 public class InheritanceParsingStep extends EntityParsingStep {
 
   public InheritanceParsingStep(EntityParsingChain next) {
@@ -12,8 +14,11 @@ public class InheritanceParsingStep extends EntityParsingStep {
 
   @Override
   public JavaEntity construct(EntityBuilder builder, CompilationUnit declaration) {
+    Optional<ClassOrInterfaceDeclaration> classOrInterface = declaration.findFirst(ClassOrInterfaceDeclaration.class);
     InheritanceVisitor visitor = new InheritanceVisitor();
-    visitor.visit(declaration, builder);
+    if (classOrInterface.isPresent()) {
+      visitor.visit(declaration, builder);
+    }
 
     if (this.next != null) {
       return this.next.construct(builder, declaration);

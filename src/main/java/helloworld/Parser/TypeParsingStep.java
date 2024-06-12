@@ -2,18 +2,19 @@ package helloworld.Parser;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 
 import java.util.Optional;
 
 public class TypeParsingStep extends EntityParsingStep {
     public TypeParsingStep(EntityParsingChain next) {
         super(next);
-        //TODO Auto-generated constructor stub
     }
 
     @Override
     public JavaEntity construct(EntityBuilder builder, CompilationUnit declaration) {
         Optional<ClassOrInterfaceDeclaration> classOrInterface = findFirstClassOrInterface(declaration);
+        Optional<EnumDeclaration> enumDeclaration = declaration.findFirst(EnumDeclaration.class);
 
         if (classOrInterface.isPresent()) {
             // Determine type of Java entity
@@ -21,6 +22,9 @@ public class TypeParsingStep extends EntityParsingStep {
             builder.type(entityType);
 
             // Continue with the next step in the parsing chain
+            return next != null ? next.construct(builder, declaration) : builder.build();
+        } else if (enumDeclaration.isPresent()) {
+            builder.type(JavaEntityType.JAVA_ENUM);
             return next != null ? next.construct(builder, declaration) : builder.build();
         }
 

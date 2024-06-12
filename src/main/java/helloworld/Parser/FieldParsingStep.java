@@ -4,6 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.Optional;
+
 
 public class FieldParsingStep extends EntityParsingStep{
     public FieldParsingStep(EntityParsingChain next) {
@@ -12,8 +14,11 @@ public class FieldParsingStep extends EntityParsingStep{
 
     @Override
     public JavaEntity construct(EntityBuilder builder, CompilationUnit cu) {
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = cu.findFirst(ClassOrInterfaceDeclaration.class);
         FieldVisitor visitor = new FieldVisitor();
-        visitor.visit(cu, builder);
+        if (classOrInterface.isPresent()) {
+            visitor.visit(cu, builder);
+        }
         if (this.next != null) {
             return this.next.construct(builder, cu);
         }

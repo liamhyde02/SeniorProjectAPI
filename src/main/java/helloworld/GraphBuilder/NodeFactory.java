@@ -17,22 +17,19 @@ public class NodeFactory {
             double size = getSize(javaEntity.getLinesOfCode());
             ArrayList<String> methods = javaEntity.getMethods();
             ArrayList<String> fields = new ArrayList<>();
+            ArrayList<String> types = new ArrayList<>();
             if (javaEntity.getType().equals(JavaEntityType.JAVA_BASE_CLASS) || javaEntity.getType().equals(JavaEntityType.JAVA_ABSTRACT_CLASS)) {
                 JavaClass javaClass = (JavaClass) javaEntity;
                 fields = javaClass.getFields();
+            } else if (javaEntity.getType().equals(JavaEntityType.JAVA_ENUM)) {
+                types = javaEntity.getMethods();
             }
-            Node newNode = new Node(name, type, size, methods, fields);
-            DataStorage.addNode(newNode);
+            Node newNode = new Node(name, type, size, methods, fields, types);
+            DataStorage.getInstance().addNode(newNode);
         } catch (Exception e) {
             return;
         }
 
-    }
-
-    private static String getType(String type){
-        if(type.equals("JAVA_BASE_CLASS")) return "class";
-        else if(type.equals("JAVA_INTERFACE")) return "iface";
-        else return "aclass";
     }
 
     private static double getSize(int loc){

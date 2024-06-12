@@ -4,6 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.Optional;
+
 public class LOCParsingStep extends EntityParsingStep {
 
     public LOCParsingStep(EntityParsingChain next) {
@@ -12,8 +14,11 @@ public class LOCParsingStep extends EntityParsingStep {
 
     @Override
     public JavaEntity construct(EntityBuilder entityBuilder, CompilationUnit compilationUnit) {
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = compilationUnit.findFirst(ClassOrInterfaceDeclaration.class);
         LOCVisitor visitor = new LOCVisitor();
-        visitor.visit(compilationUnit, entityBuilder);
+        if (classOrInterface.isPresent()) {
+            visitor.visit(compilationUnit, entityBuilder);
+        }
         if (this.next != null) {
             return this.next.construct(entityBuilder, compilationUnit);
         } else {

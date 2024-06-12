@@ -27,13 +27,13 @@ public class EdgeFactory {
     public static void createOuts(String name, String type, JSONArray outs){
         for (int i = 0; i < outs.length(); i++) {
             Edge newEdge = new Edge(name, outs.getString(i), type);
-            DataStorage.addEdge(newEdge);
+            DataStorage.getInstance().addEdge(newEdge);
         }
     }
     public static void createIns(String name, String type, JSONArray ins){
         for (int i = 0; i < ins.length(); i++) {
             Edge newEdge = new Edge(ins.getString(i), name, type);
-            DataStorage.addEdge(newEdge);
+            DataStorage.getInstance().addEdge(newEdge);
         }
     }
 }

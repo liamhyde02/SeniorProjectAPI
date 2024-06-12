@@ -5,5 +5,5 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface DataFetcher {
-    public ArrayList<File> downloadPackage(String url, String branch, boolean isLambdaEnvironment) throws IOException;
+    public void downloadPackage(String url, String branch, boolean isLambdaEnvironment) throws IOException;
 }

@@ -5,6 +5,8 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.Optional;
+
 public class CompositionParsingStep extends EntityParsingStep {
 
     public CompositionParsingStep(EntityParsingChain next) {
@@ -13,9 +15,11 @@ public class CompositionParsingStep extends EntityParsingStep {
 
     public JavaEntity construct(EntityBuilder builder, CompilationUnit declaration) {
         // Parse the CompilationUnit to find composition relationships
+        Optional<ClassOrInterfaceDeclaration> classOrInterface = declaration.findFirst(ClassOrInterfaceDeclaration.class);
         CompositionVisitor visitor = new CompositionVisitor();
-        visitor.visit(declaration, builder);
-
+        if (classOrInterface.isPresent()) {
+            visitor.visit(declaration, builder);
+        }
         // Proceed with the next step in the chain, if any
         if (next != null) {
             return next.construct(builder, declaration);

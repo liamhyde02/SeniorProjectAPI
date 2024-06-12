@@ -13,4 +13,5 @@ public interface EntityBuilder {
     void addAssociation(String s);
     void addMethod(String s);
     void addField(String s);
+    void addType(String s);
 }

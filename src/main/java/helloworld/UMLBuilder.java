@@ -29,8 +29,10 @@ public class UMLBuilder {
     }
 
     public String buildUMLDiagram() {
-        List<Node> nodes = DataStorage.getNodes();
-        List<Edge> edges = DataStorage.getEdges();
+        List<Node> nodes = DataStorage.getInstance().getNodes();
+        System.out.println("Nodes: " + nodes.size());
+        List<Edge> edges = DataStorage.getInstance().getEdges();
+        System.out.println("Edges: " + edges.size());
         StringBuilder uml = new StringBuilder("@startuml\n");
 
         for (Node node : nodes) {
@@ -46,17 +48,37 @@ public class UMLBuilder {
                 case "aclass":
                     uml.append("abstract class ");
                     break;
+                case "enum":
+                    uml.append("enum ");
+                    break;
             }
-            uml.append(nodeName).append(" {\n");
+            uml.append(nodeName);
+            switch (node.getPattern()) {
+                case "Singleton":
+                    uml.append("<< (S,#FF7700) >>");
+                    break;
+            }
+            if (node.getZone() <= 0.3) {
+                uml.append(" #lightgreen;line:green");
+
+            } else if (node.getZone() <= 0.7) {
+                uml.append(" #pink;line:red");
+            } else {
+                uml.append(" #aliceblue;line:blue");
+
+            }
+            uml.append(" {\n");
             ArrayList<String> fields = node.getFields();
             for (String field : fields) {
-                System.out.println("Field: " + field);
                 uml.append("{field}").append(" ").append(field).append("\n");
             }
             ArrayList<String> methods = node.getMethods();
             for (String method : methods) {
-                System.out.println("Method: " + method);
                 uml.append("{method}").append(" ").append(method).append("\n");
+            }
+            ArrayList<String> types = node.getTypes();
+            for (String type : types) {
+                uml.append(type).append("\n");
             }
             uml.append("}\n");
         }
@@ -72,7 +94,7 @@ public class UMLBuilder {
                         uml.append(from).append(" ..|> ");
                         break;
                     case "composition":
-                        uml.append(from).append(" *-- ");
+                        uml.append(from).append(" --* ");
                         break;
                     case "dependencies":
                         uml.append(from).append(" ..> ");
