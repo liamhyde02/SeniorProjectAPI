@@ -31,6 +31,8 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         // Clean up /tmp directory at the beginning
+        GithubDataFetcher.clearFiles();
+
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 

@@ -13,6 +13,5 @@ public class Functionality {
         LoopingFunctionality.runChain(JavaEntities);
         DataStorage.getInstance().removeDuplicateNodes();
         DataStorage.getInstance().removeDuplicateEdges();
-        MetricsCalculator.calculateMetrics(DataStorage.getInstance().getNodes(), DataStorage.getInstance().getEdges());
     }
 }

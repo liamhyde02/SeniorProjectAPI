@@ -70,15 +70,11 @@ public class Node {
     }
 
     public double getInstability() {
-        return this.instability;
+        return instability;
     }
 
     public double getAbstractness() {
-        return this.abstractness;
-    }
-
-    public double getZone() {
-        return Math.abs(this.abstractness + this.instability - 1);
+        return abstractness;
     }
 
     public JSONObject toJsonObject() {

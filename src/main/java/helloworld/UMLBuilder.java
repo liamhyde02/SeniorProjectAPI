@@ -58,15 +58,6 @@ public class UMLBuilder {
                     uml.append("<< (S,#FF7700) >>");
                     break;
             }
-            if (node.getZone() <= 0.3) {
-                uml.append(" #lightgreen;line:green");
-
-            } else if (node.getZone() <= 0.7) {
-                uml.append(" #pink;line:red");
-            } else {
-                uml.append(" #aliceblue;line:blue");
-
-            }
             uml.append(" {\n");
             ArrayList<String> fields = node.getFields();
             for (String field : fields) {
@@ -94,7 +85,7 @@ public class UMLBuilder {
                         uml.append(from).append(" ..|> ");
                         break;
                     case "composition":
-                        uml.append(from).append(" --* ");
+                        uml.append(from).append(" *-- ");
                         break;
                     case "dependencies":
                         uml.append(from).append(" ..> ");
